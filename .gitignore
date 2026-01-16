@@ -1,0 +1,32 @@
+# ...existing code...
+.env
+.env.local
+.env.*.local
+*.db
+models/*.json
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.sqlite3
+/venv
+/.env
+/env
+.venv/
+.Python
+.pytest_cache/
+.coverage
+coverage.xml
+htmlcov/
+dist/
+build/
+*.egg-info/
+pip-wheel-metadata/
+*.log
+logs/
+.vscode/
+.idea/
+.DS_Store
+.mypy_cache/
+.ropeproject/
+# ...existing code...

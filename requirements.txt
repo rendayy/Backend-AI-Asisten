@@ -1,0 +1,8 @@
+fastapi
+uvicorn[standard]
+pydantic
+wikipedia
+PyJWT
+python-dotenv
+gTTS
+requests

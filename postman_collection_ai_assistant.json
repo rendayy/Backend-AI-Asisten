@@ -1,0 +1,340 @@
+{
+  "info": {
+    "name": "AI Assistant API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_postman_id": "ai-assistant-collection",
+    "description": "Collection dengan variabel untuk base_url dan api_key"
+  },
+  "variable": [
+    { "key": "base_url", "value": "http://127.0.0.1:8000", "type": "default" },
+    { "key": "api_key", "value": "", "type": "default" }
+  ],
+  "item": [
+    {
+      "name": "Register",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"username\": \"user1\",\n  \"email\": \"user1@example.com\",\n  \"password\": \"pass123\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/assistant/register",
+          "path": [
+            "assistant",
+            "register"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Login",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"username\": \"user1\",\n  \"password\": \"pass123\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/assistant/login",
+          "path": [
+            "assistant",
+            "login"
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "const json = pm.response.json();",
+              "if (json && json.access_token) {",
+              "  pm.collectionVariables.set('api_key', json.access_token);",
+              "}",
+              "pm.test('access_token is present', () => pm.expect(json.access_token).to.exist);"
+            ]
+          }
+        }
+      ],
+      "response": [
+        {
+          "name": "Login sample",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"user1\",\n  \"password\": \"pass123\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/assistant/login"
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [],
+          "body": "{\n  \"access_token\": \"<token>\",\n  \"token_type\": \"bearer\",\n  \"user\": {\n    \"id\": 1,\n    \"username\": \"user1\",\n    \"email\": \"user1@example.com\"\n  },\n  \"refresh_token\": \"<refresh_token>\"\n}"
+        }
+      ]
+    },
+      {
+        "name": "Get Current User",
+        "request": {
+          "method": "GET",
+          "header": [
+            { "key": "Authorization", "value": "Bearer {{api_key}}", "type": "text" }
+          ],
+          "url": {
+            "raw": "{{base_url}}/assistant/me",
+            "path": ["assistant", "me"]
+          }
+        },
+        "response": [
+          {
+            "name": "Me sample",
+            "status": "OK",
+            "code": 200,
+            "_postman_previewlanguage": "json",
+            "header": [],
+            "body": "{\n  \"user\": {\n    \"id\": 1,\n    \"username\": \"user1\",\n    \"email\": \"user1@example.com\"\n  },\n  \"greeting\": \"Selamat datang, user1\"\n}"
+          }
+        ]
+      },
+      {
+        "name": "Greeting Audio",
+        "request": {
+          "method": "GET",
+          "header": [
+            { "key": "Authorization", "value": "Bearer {{api_key}}", "type": "text" }
+          ],
+          "url": {
+            "raw": "{{base_url}}/assistant/greeting/audio",
+            "path": ["assistant", "greeting", "audio"]
+          }
+        },
+        "response": []
+      },
+      {
+        "name": "Chat",
+        "request": {
+          "method": "POST",
+          "header": [
+            { "key": "Content-Type", "value": "application/json" },
+            { "key": "Authorization", "value": "Bearer {{api_key}}", "type": "text" }
+          ],
+          "body": {
+            "mode": "raw",
+            "raw": "{\n  \"message\": \"Buka WhatsApp\"\n}"
+          },
+          "url": {
+            "raw": "{{base_url}}/assistant/chat/",
+            "path": ["assistant", "chat", ""]
+          }
+        },
+        "response": [
+          {
+            "name": "Chat sample",
+            "status": "OK",
+            "code": 200,
+            "_postman_previewlanguage": "json",
+            "header": [],
+            "body": "{\n  \"reply\": \"Oke user1, saya akan membuka whatsapp untuk Anda.\",\n  \"action\": { \"type\": \"open_app\", \"target\": \"whatsapp\", \"package\": \"com.whatsapp\" }\n}"
+          }
+        ]
+      },
+    {
+      "name": "Add Task",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{api_key}}", "type": "text" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"buy milk\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/assistant/tasks"
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get Tasks",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{api_key}}", "type": "text" }
+        ],
+        "url": {
+          "raw": "{{base_url}}/assistant/tasks"
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Clear Tasks",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{api_key}}", "type": "text" }
+        ],
+        "url": {
+          "raw": "{{base_url}}/assistant/tasks"
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Wikipedia Search",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{api_key}}", "type": "text" }
+        ],
+        "url": {
+          "raw": "{{base_url}}/assistant/wiki",
+          "query": [
+            { "key": "q", "value": "python" }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Logout",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{api_key}}", "type": "text" }
+        ],
+        "url": {
+          "raw": "{{base_url}}/assistant/logout",
+          "path": [
+            "assistant",
+            "logout"
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.collectionVariables.unset('api_key');",
+              "pm.test('logged out', () => pm.expect(pm.response.code).to.be.oneOf([200,204]));"
+            ]
+          }
+        }
+      ],
+      "response": []
+    },
+    {
+      "name": "Recommend Learning",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{api_key}}", "type": "text" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"topic\": \"python\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/assistant/recommend"
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Schedule Reminder",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{api_key}}", "type": "text" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"message\": \"stand up meeting\",\n  \"delay_seconds\": 5\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/assistant/schedule"
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get Task by Index",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{api_key}}", "type": "text" }
+        ],
+        "url": {
+          "raw": "{{base_url}}/assistant/tasks/0"
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Update Task",
+      "request": {
+        "method": "PUT",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{api_key}}", "type": "text" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"updated task name\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/assistant/tasks/0"
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Delete Task",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{api_key}}", "type": "text" }
+        ],
+        "url": {
+          "raw": "{{base_url}}/assistant/tasks/0"
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "List Reminders",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{api_key}}", "type": "text" }
+        ],
+        "url": {
+          "raw": "{{base_url}}/assistant/reminders"
+        }
+      },
+      "response": []
+    }
+  ]
+}
