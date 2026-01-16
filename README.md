@@ -4,7 +4,7 @@ This repository contains a simple split between a FastAPI backend and a minimal 
 
 How it's organized:
 - `backend/` — Python FastAPI backend with routes, controllers, services and schemas.
-- `frontend/` — Minimal static HTML demo to call API endpoints.
+- `frontend/` — Flutter with providers, screens and services.
 
 Run backend (from project root):
 
